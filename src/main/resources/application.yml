@@ -5,14 +5,17 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/takeout?serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/reggie?serverTimezone=UTC
     username: root
-    password: 123456
+    password: 100122200
 
 mybatis-plus:
   configuration:
+    #驼峰命名配置 在映射实体或者属性时，将数据库中表名和字段名中的下划线去掉，按照驼峰命名法映射 address_book ---> AddressBook
     map-underscore-to-camel-case: true
+    #日志输出
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   global-config:
     db-config:
+      # 雪花算法
       id-type: ASSIGN_ID
