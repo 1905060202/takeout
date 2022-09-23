@@ -19,3 +19,6 @@ mybatis-plus:
     db-config:
       # 雪花算法
       id-type: ASSIGN_ID
+teamwork:
+      path: D:\img\
+

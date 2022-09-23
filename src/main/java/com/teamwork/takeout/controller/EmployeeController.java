@@ -60,6 +60,7 @@ public class EmployeeController {
         //1、将页面提交的密码password进行md5加密处理
         //md5是不可逆的，密文无法被逆向解密
         //只有重置密码，没有找回密码，因为密码已经被加密了，不可逆，开发人员也不知道具体密码是啥
+
         String password = employee.getPassword();
         password = DigestUtils.md5DigestAsHex(password.getBytes());
 
