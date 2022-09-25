@@ -40,7 +40,8 @@ public class LoginCheckFilter implements Filter {
                 "/employee/login",  // 登陆页 直接放行
                 "/employee/logout",//注销页 直接放行
                 "/backend/**", //所有的pc端的 前端资源 放行
-                "/front/**" //所有的移动端 前端资源 放行
+                "/front/**", //所有的移动端 前端资源 放行
+                "/common/**"
         };
 
 
