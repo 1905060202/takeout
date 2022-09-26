@@ -64,21 +64,27 @@ public class DishController {
 
         //对象拷贝
         BeanUtils.copyProperties(pageInfo,dishDtoPage,"records");
+
         List<Dish> records = pageInfo.getRecords();
+
         List<DishDto> list = records.stream().map((item)->{
             DishDto dishDto = new DishDto();
+            //通过属性拷贝的方式，给DishDto属性赋值
             BeanUtils.copyProperties(item,dishDto);
+            //通过分类id查询分类表，获取categorName
             Long categoryId = item.getCategoryId();//分类id
 
             Category category = categoryService.getById(categoryId);
 
-            if(categoryId!=null){
+            if(category!=null){
 
                 String categoryName = category.getName();
                 dishDto.setCategoryName(categoryName);
             }
             return dishDto;
-        }).collect(Collectors.toList());
+        }).collect(Collectors.toList());//又把他变成一个集合
+
+        //给page新的集合
         dishDtoPage.setRecords(list);
 
         return R.success(dishDtoPage);
@@ -128,5 +134,25 @@ public class DishController {
 
         boolean deleteStatus = dishService.removeByIds(ids);
         return deleteStatus?R.success("删除成功"):R.error("删除失败");
+    }
+
+    /**
+     * 根据条件查询对应的菜品数据
+     * @param dish
+     * @return
+     */
+    @GetMapping("/list")
+    public R<List<Dish>> list(Dish dish){
+        //构造查询条件
+        LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(dish.getCategoryId() != null ,Dish::getCategoryId,dish.getCategoryId());
+        //添加条件，查询状态为1（起售状态）的菜品
+        queryWrapper.eq(Dish::getStatus,1);
+        //添加排序条件
+        queryWrapper.orderByAsc(Dish::getSort).orderByDesc(Dish::getUpdateTime);
+
+        List<Dish> list = dishService.list(queryWrapper);
+
+        return R.success(list);
     }
 }    
