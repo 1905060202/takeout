@@ -61,10 +61,14 @@ public class EmployeeController {
         //md5是不可逆的，密文无法被逆向解密
         //只有重置密码，没有找回密码，因为密码已经被加密了，不可逆，开发人员也不知道具体密码是啥
 
+        //加密是为了获取数据库已加密后的文件
+
         String password = employee.getPassword();
         password = DigestUtils.md5DigestAsHex(password.getBytes());
 
         //2、根据页面提交的用户名username查询数据库
+        //条件构造器，类似于构造一个sql语句，简化操作
+        //数据库的操作
         LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper<>();//实例化一个Wrapper
         queryWrapper.eq(Employee::getUsername,employee.getUsername());//获取用户名
         Employee emp = employeeService.getOne(queryWrapper);//根据用户名获取对象
@@ -93,6 +97,7 @@ public class EmployeeController {
 
     @PostMapping("/logout")
     public R<String> logout(HttpServletRequest request){
+        //抹去Session中此用户的信息
         request.getSession().removeAttribute("employee");
         return R.success("logout ok");
     }

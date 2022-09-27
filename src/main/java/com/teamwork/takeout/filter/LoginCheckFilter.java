@@ -41,7 +41,9 @@ public class LoginCheckFilter implements Filter {
                 "/employee/logout",//注销页 直接放行
                 "/backend/**", //所有的pc端的 前端资源 放行
                 "/front/**", //所有的移动端 前端资源 放行
-                "/common/**"
+                "/common/**",
+                "/user/login",
+                "/user/sendMsg"
         };
 
 
@@ -62,6 +64,18 @@ public class LoginCheckFilter implements Filter {
         Object employee = session.getAttribute("employee");
 
 //        如果用户id不等于空，说明已经登陆过，直接放行
+
+        //4-2、判断登录状态，如果已登录，则直接放行
+        if(request.getSession().getAttribute("user") != null){
+            log.info("用户已登录，用户id为：{}",request.getSession().getAttribute("user"));
+
+            Long userId = (Long) request.getSession().getAttribute("user");
+            BaseContext.setCurrentId(userId);
+
+            filterChain.doFilter(request,response);
+            return;
+        }
+
         if (employee != null) {
 
             log.info("用户已经登录，直接放行");

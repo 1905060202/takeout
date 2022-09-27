@@ -42,7 +42,6 @@ public class SetmealServiceImpl extends ServiceImpl<SetmealMapper,Setmeal> imple
         //保存套餐和菜品的关联信息，操作setmeal_dish,执行insert操作
         setmealDishService.saveBatch(setmealDishes);
     }
-
     /**
      * 删除套餐，同时需要删除套餐和菜品的关联数据
      * @param ids
